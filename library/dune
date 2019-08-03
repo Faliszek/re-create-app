@@ -7,4 +7,5 @@
    (name CreateReasonApp)
    ; Other libraries list this name in their package.json 'require' field to use this library.
    (public_name create-reason-app.lib)
+   (libraries  unix pastel.lib )
 )

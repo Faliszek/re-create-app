@@ -1,1 +1,1 @@
-CreateReasonApp.Util.foo();
+CreateReasonApp.Util.run();
