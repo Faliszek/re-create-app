@@ -23,7 +23,13 @@
       "namespace": "CreateReasonApp",
       "require": [
         "unix",
-        "pastel.lib"
+        "pastel.lib",
+        "yojson",
+        "ppx_deriving_yojson.runtime"
+      ],
+      "preprocess": [
+        "pps",
+        "ppx_deriving_yojson"
       ]
     },
     "executable": {
@@ -42,6 +48,8 @@
   "dependencies": {
     "@esy-ocaml/reason": "*",
     "@opam/dune": ">=1.6.0",
+    "@opam/ppx_deriving_yojson": "3.5.1",
+    "@opam/yojson": "1.7.0",
     "@reason-native/pastel": "^0.2.1",
     "ocaml": "4.7.x",
     "pesy": "*",

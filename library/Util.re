@@ -2,16 +2,16 @@ type packageManager =
   | NPM
   | Yarn;
 
-let managerToCommand = m =>
-  switch (m) {
-  | NPM => "npm init --yes"
-  | Yarn => "yarn init --yes"
-  };
-
 let managerToString = m =>
   switch (m) {
   | NPM => "npm"
   | Yarn => "yarn"
+  };
+
+let managerToCommand = m =>
+  switch (m) {
+  | NPM => "npm install"
+  | Yarn => "yarn add "
   };
 
 let quitWithError = () => {
@@ -29,6 +29,7 @@ let createDirForProject = (~appName) => {
   let pathToBuild = Sys.getcwd();
 
   let appPathName = pathToBuild ++ "/" ++ appName;
+
   //Try create directory with current path and appName
 
   try(Unix.mkdir(appPathName, 0o755)) {
@@ -93,42 +94,22 @@ let createDirForProject = (~appName) => {
   result^;
 };
 
-let runYarnOnNpm = () => {
+let checkPackageManager = () => {
   let noPackageManagerDetected =
     Pastel.(<Pastel> "It looks like you don't have npm installed" </Pastel>);
   let result = ref(None);
-
-  switch (Sys.command("hash yarn")) {
+  switch (Sys.command(ShellCommands.Unix.checkYarn)) {
   | 0 => result := Some(Yarn)
-  | _ => result := Some(NPM)
-  };
-
-  switch (Sys.command("hash npm")) {
-  | 0 => result := Some(NPM)
-  | _ => result := None
-  };
-
-  let runPackageManagerResult =
-    switch (result^) {
-    | Some(packageManager) =>
-      packageManager |> managerToCommand |> Sys.command
-    | None =>
+  | _ =>
+    switch (Sys.command(ShellCommands.Unix.checkNPM)) {
+    | 0 => result := Some(NPM)
+    | _ =>
       print_endline(noPackageManagerDetected);
-      1;
-    };
+      result := None;
+    }
+  };
 
-  print_int(runPackageManagerResult);
-  //   try(yarn) {
-  //    | exn =>   {
-  //     }
-  //     | 0 => Ok(Yarn)
-  //     | _ => Error(Yarn)
-  //     };
-  //   } else {
-  //     switch (managerToCommand(NPM)) {
-  //     | 0 => Ok(NPM)
-  //     | _ => Error(NPM)
-  //     };
+  result^;
 };
 
 let startCreatingProject = (~appName) => {
@@ -147,20 +128,28 @@ let startCreatingProject = (~appName) => {
           <Pastel bold=true> appPathName "\n" </Pastel>
         </Pastel>
       );
-    Sys.command("cd " ++ pathToBuild ++ "/" ++ appName ++ " && pwd") |> ignore;
-    // Sys.command("pwd") |> ignore;
-    // runYarnOnNpm();
-
-    // let output =
-    //   switch (runYarnOnNpm()) {
-    //   | Ok(packageManager) => "✅ initialized config file"
-    //   | Error(packageManager) =>
-    //     "❌ There was an error caused by " ++ managerToString(packageManager)
-    //   };
 
     print_endline(start);
-  // print_endline(output);
+
+    let output =
+      switch (checkPackageManager()) {
+      | Some(packageManager) =>
+        PackageJSON.make(~appName, ~path=appPathName);
+
+        let instalDependencies = "cd my-app && yarn install && yarn add parcel-bundler";
+
+        "✅ Created package.json succesfully!";
+
+      | None =>
+        "\n❌ It looks like you don't have installed "
+        ++ managerToString(NPM)
+        ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/"
+      };
+    ();
+    print_endline(output);
   };
+  let _ = ();
+  ();
 };
 
 let run = () =>
