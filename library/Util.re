@@ -32,7 +32,7 @@ let createDirForProject = (~appName) => {
 
   //Try create directory with current path and appName
 
-  try(Unix.mkdir(appPathName, 0o755)) {
+  try(Unix.mkdir(appPathName, 0o777)) {
   //Of course, it may not goes wall so we try to handle this
   //with useful information for user about a error
 
@@ -136,8 +136,11 @@ let startCreatingProject = (~appName) => {
       | Some(packageManager) =>
         PackageJSON.make(~appName, ~path=appPathName);
 
-        let instalDependencies = "cd my-app && yarn install && yarn add parcel-bundler";
+        Unix.chdir(appPathName) |> ignore;
 
+        try(Unix.system("yarn add parcel-bundler") |> ignore) {
+        | exn => exn |> Printexc.to_string |> print_endline
+        };
         "✅ Created package.json succesfully!";
 
       | None =>
@@ -152,8 +155,12 @@ let startCreatingProject = (~appName) => {
   ();
 };
 
-let run = () =>
+let run = () => {
   switch (Sys.argv, Sys.os_type) {
+  | (args, "Unix") when args |> Array.length == 1 =>
+    print_endline(
+      "You should provide name for your app, for example npx create-reason-app my-app",
+    )
   | ([|path, name|], "Unix") => startCreatingProject(~appName=name)
 
   | (_, "Windows") => print_endline("Sorry windows is not supported yet :(")
@@ -161,3 +168,4 @@ let run = () =>
     print_endline("Sorry your OS is not supported :(")
   | _ => print_endline("something went preety wrong")
   };
+};
