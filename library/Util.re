@@ -112,6 +112,55 @@ let checkPackageManager = () => {
   result^;
 };
 
+let init = (~path) => {
+  print_endline(
+    Pastel.(
+      <Pastel>
+        "Creating a new React app in "
+        <Pastel bold=true> path "\n" </Pastel>
+      </Pastel>
+    ),
+  );
+};
+
+let instalingDevDependencies = (~packageManager) => {
+  print_endline(
+    Pastel.(
+      <Pastel>
+        "\n⏳ Installing dev dependencies "
+        <Pastel bold=true> "parcel" </Pastel>
+        " and "
+        <Pastel bold=true> "bs-platform \n\n" </Pastel>
+      </Pastel>
+    ),
+  );
+
+  try(
+    Unix.system(
+      managerToCommand(packageManager) ++ " parcel-bundler bs-platform --dev",
+    )
+    |> ignore
+  ) {
+  | exn => exn |> Printexc.to_string |> print_endline
+  };
+};
+let installingDependencies = (~packageManager) => {
+  print_endline(
+    Pastel.(
+      <Pastel>
+        "\n⏳ Installing "
+        <Pastel bold=true> "reason-react \n\n" </Pastel>
+      </Pastel>
+    ),
+  );
+
+  try(
+    Unix.system(managerToCommand(packageManager) ++ "reason-react") |> ignore
+  ) {
+  | exn => exn |> Printexc.to_string |> print_endline
+  };
+};
+
 let startCreatingProject = (~appName) => {
   switch (createDirForProject(~appName)) {
   | Error(_) => quitWithError()
@@ -121,35 +170,25 @@ let startCreatingProject = (~appName) => {
 
     let appPathName = pathToBuild ++ "/" ++ appName;
     //   tryCopyTemplate(~appName=name);
-    let start =
-      Pastel.(
-        <Pastel>
-          "Creating a new React app in "
-          <Pastel bold=true> appPathName "\n" </Pastel>
-        </Pastel>
-      );
 
-    print_endline(start);
+    switch (checkPackageManager()) {
+    | Some(packageManager) =>
+      PackageJSON.make(~appName, ~path=appPathName);
+      print_endline("\n✅ Created package.json succesfully!");
+      Unix.chdir(appPathName) |> ignore;
 
-    let output =
-      switch (checkPackageManager()) {
-      | Some(packageManager) =>
-        PackageJSON.make(~appName, ~path=appPathName);
+      init(~path=appPathName);
+      instalingDevDependencies(~packageManager);
+      installingDependencies(~packageManager);
 
-        Unix.chdir(appPathName) |> ignore;
-
-        try(Unix.system("yarn add parcel-bundler") |> ignore) {
-        | exn => exn |> Printexc.to_string |> print_endline
-        };
-        "✅ Created package.json succesfully!";
-
-      | None =>
+    | None =>
+      print_endline(
         "\n❌ It looks like you don't have installed "
         ++ managerToString(NPM)
-        ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/"
-      };
+        ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
+      )
+    };
     ();
-    print_endline(output);
   };
   let _ = ();
   ();

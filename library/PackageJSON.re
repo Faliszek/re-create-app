@@ -4,7 +4,7 @@ type package = {
   version: string,
   main: string,
   license: string,
-  //   keywords: array(string),
+  keywords: array(string),
 };
 
 let make = (~appName, ~path) => {
@@ -14,7 +14,7 @@ let make = (~appName, ~path) => {
       version: "1.0.0",
       main: "index.js",
       license: "MIT",
-      //   keywords: [|"reasonml", "bucklescript", "react"|],
+      keywords: [|"reasonml", "bucklescript", "react"|],
     })
     |> Yojson.Safe.pretty_to_string;
 
