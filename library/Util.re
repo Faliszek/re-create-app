@@ -161,25 +161,57 @@ let installingDependencies = (~packageManager) => {
   };
 };
 
-let startCreatingProject = (~appName) => {
+let tryCopyTemplate = (~rootPath, ~projectPath) => {
+  //NOTE: i think i can resolve better this, but for now,
+  //we nneed absolute path from our directory
+  //localy i run it form
+  ///Users/pawelfalisz/Documents/Reason/create-reason-app/_esy/default/build/default/executable/CreateReasonAppApp.exe
+  //and we must change working directory to Users/pawelfalisz/Documents/Reason/create-reason-app/
+  //I think this must be change when i want to publish to npm, beacuse binary file
+  //is in /_release/bin/CreateReasonAppApp.exe, so when releasing, this variable strToCut
+  //should be " /_release/bin/CreateReasonAppApp.exe"
+  let strToCut = "/_esy/default/build/default/executable/CreateReasonAppApp.exe";
+  let lengthToCut = String.length(rootPath) - String.length(strToCut);
+  let newPath = rootPath |> String.sub(_, 0, lengthToCut);
+  print_endline("ABSOLUTE PATH " ++ rootPath);
+
+  print_endline("PROJECT PATH " ++ projectPath);
+  print_endline("NEW PATH " ++ newPath);
+  Sys.chdir(newPath);
+  try(
+    Unix.system(
+      ShellCommands.Unix.copyTemplate(~rootPath=newPath, ~projectPath),
+    )
+    |> ignore
+  ) {
+  | exn => exn |> Printexc.to_string |> print_endline
+  };
+  Sys.chdir(projectPath);
+};
+
+let startCreatingProject = (~rootPath, ~appName) => {
+  print_endline(rootPath);
   switch (createDirForProject(~appName)) {
   | Error(_) => quitWithError()
 
   | Ok(_) =>
     let pathToBuild = Sys.getcwd();
+    print_endline(pathToBuild);
 
     let appPathName = pathToBuild ++ "/" ++ appName;
-    //   tryCopyTemplate(~appName=name);
 
     switch (checkPackageManager()) {
     | Some(packageManager) =>
-      PackageJSON.make(~appName, ~path=appPathName);
+      FileConfig.PackageJSON.make(~appName, ~path=appPathName);
+
+      FileConfig.BSConfig.make(~appName, ~path=appPathName);
       print_endline("\n✅ Created package.json succesfully!");
       Unix.chdir(appPathName) |> ignore;
 
       init(~path=appPathName);
       instalingDevDependencies(~packageManager);
       installingDependencies(~packageManager);
+      tryCopyTemplate(~rootPath, ~projectPath=appPathName);
 
     | None =>
       print_endline(
@@ -200,7 +232,8 @@ let run = () => {
     print_endline(
       "You should provide name for your app, for example npx create-reason-app my-app",
     )
-  | ([|path, name|], "Unix") => startCreatingProject(~appName=name)
+  | ([|path, name|], "Unix") =>
+    startCreatingProject(~rootPath=path, ~appName=name)
 
   | (_, "Windows") => print_endline("Sorry windows is not supported yet :(")
   | ([|path, name|], _) =>
