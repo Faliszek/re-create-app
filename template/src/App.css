@@ -19,8 +19,12 @@
   color: white;
 }
 
+.App-button-row {
+  display: flex;
+}
 .App-link {
-  color: #61dafb;
+  color: #db4d3f;
+  margin: 0 16px;
 }
 
 @keyframes App-logo-spin {
