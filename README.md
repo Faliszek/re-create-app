@@ -1,2 +1,2 @@
-# create-reason-app
+# re-create-app
 Start building reason react app with one command
