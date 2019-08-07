@@ -2,22 +2,31 @@ let _ = [%bs.raw {|require('./App.css')|}];
 let logo: string = [%bs.raw {|require('./logo.svg')|}];
 
 [@react.component]
-let make = () =>  {
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          "Edit "->React.string<code>"src/App.js"->React.string</code>" and save to reload."->React.string
-        </p>
+let make = () => {
+  <div className="App">
+    <header className="App-header">
+      <img src=logo className="App-logo" alt="logo" />
+      <p>
+        "Edit "->React.string
+        <code> "src/App.re"->React.string </code>
+        " and save to reload."->React.string
+      </p>
+      <div className="App-button-row">
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://reasonml.github.io/"
           target="_blank"
-          rel="noopener noreferrer"
-        >
-          "Learn React"->React.string
+          rel="noopener noreferrer">
+          "Learn ReasonML"->React.string
         </a>
-      </header>
-    </div>
-}
-
+        <a
+          className="App-link"
+          href="https://reasonml.github.io/reason-react/"
+          target="_blank"
+          rel="noopener noreferrer">
+          "Learn ReasonReact"->React.string
+        </a>
+      </div>
+    </header>
+  </div>;
+};
