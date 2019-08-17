@@ -21,10 +21,6 @@ let quitWithError = () => {
   exit(0);
 };
 let createDirForProject = (~appName) => {
-  //   print_endline(appName);
-  //   print_endline(pathToBuild);
-
-  //   print_endline(pathToTemplate);
   let result = ref(Ok(""));
   let pathToBuild = Sys.getcwd();
 
@@ -33,7 +29,7 @@ let createDirForProject = (~appName) => {
   //Try create directory with current path and appName
 
   try(Unix.mkdir(appPathName, 0o777)) {
-  //Of course, it may not goes wall so we try to handle this
+  //Of course, it may not goes well so we try to handle this
   //with useful information for user about a error
 
   | Unix.Unix_error(err, _, _) =>
@@ -74,7 +70,7 @@ let createDirForProject = (~appName) => {
             "Try run "
             <Pastel bold=true> "rm -rf ./" appName </Pastel>
             " and then, again"
-            <Pastel bold=true> " npx create-reason-app " appName </Pastel>
+            <Pastel bold=true> " npx re-create-app " appName </Pastel>
             <Pastel> " or you can pick other name for your project" </Pastel>
           </Pastel>
         )
@@ -155,7 +151,10 @@ let installingDependencies = (~packageManager) => {
   );
 
   try(
-    Unix.system(managerToCommand(packageManager) ++ "reason-react") |> ignore
+    Unix.system(
+      managerToCommand(packageManager) ++ "reason-react react react-dom",
+    )
+    |> ignore
   ) {
   | exn => exn |> Printexc.to_string |> print_endline
   };
@@ -163,20 +162,17 @@ let installingDependencies = (~packageManager) => {
 
 let tryCopyTemplate = (~rootPath, ~projectPath) => {
   //NOTE: i think i can resolve better this, but for now,
-  //we nneed absolute path from our directory
+  //we need absolute path from our directory
   //localy i run it form
   ///Users/pawelfalisz/Documents/Reason/create-reason-app/_esy/default/build/default/executable/CreateReasonAppApp.exe
   //and we must change working directory to Users/pawelfalisz/Documents/Reason/create-reason-app/
-  //I think this must be change when i want to publish to npm, beacuse binary file
+  //I think this must be changed when i want to publish to npm, beacuse binary file
   //is in /_release/bin/CreateReasonAppApp.exe, so when releasing, this variable strToCut
   //should be " /_release/bin/CreateReasonAppApp.exe"
   let strToCut = "/_esy/default/build/default/executable/CreateReasonAppApp.exe";
   let lengthToCut = String.length(rootPath) - String.length(strToCut);
   let newPath = rootPath |> String.sub(_, 0, lengthToCut);
-  print_endline("ABSOLUTE PATH " ++ rootPath);
 
-  print_endline("PROJECT PATH " ++ projectPath);
-  print_endline("NEW PATH " ++ newPath);
   Sys.chdir(newPath);
   try(
     Unix.system(
@@ -190,13 +186,17 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
 };
 
 let startCreatingProject = (~rootPath, ~appName) => {
-  print_endline(rootPath);
+  print_endline(
+    Pastel.(
+      <Pastel> "Starting create project, this may take a while \n" </Pastel>
+    ),
+  );
   switch (createDirForProject(~appName)) {
   | Error(_) => quitWithError()
 
   | Ok(_) =>
     let pathToBuild = Sys.getcwd();
-    print_endline(pathToBuild);
+    // print_endline(pathToBuild);
 
     let appPathName = pathToBuild ++ "/" ++ appName;
 
@@ -209,8 +209,9 @@ let startCreatingProject = (~rootPath, ~appName) => {
       Unix.chdir(appPathName) |> ignore;
 
       init(~path=appPathName);
-      instalingDevDependencies(~packageManager);
       installingDependencies(~packageManager);
+      instalingDevDependencies(~packageManager);
+
       tryCopyTemplate(~rootPath, ~projectPath=appPathName);
 
     | None =>
@@ -235,7 +236,7 @@ let run = () => {
   | ([|path, name|], "Unix") =>
     startCreatingProject(~rootPath=path, ~appName=name)
 
-  | (_, "Windows") => print_endline("Sorry windows is not supported yet :(")
+  | (_, "Windows") => print_endline("Sorry Windows is not supported yet :(")
   | ([|path, name|], _) =>
     print_endline("Sorry your OS is not supported :(")
   | _ => print_endline("something went preety wrong")

@@ -3,7 +3,6 @@ module PackageJSON = {
   type scripts = {
     start: string,
     compile: string,
-    build: string,
   };
 
   [@deriving yojson]
@@ -25,9 +24,8 @@ module PackageJSON = {
         license: "MIT",
         keywords: [|"reasonml", "bucklescript", "react"|],
         scripts: {
-          start: "parcel watch ./public/index.html",
+          start: "parcel  ./public/index.html --port 3000",
           compile: "bsb -make-world -clean-world -w",
-          build: "yarn buckle:build && parcel build ./public/index.html",
         },
       })
       |> Yojson.Safe.pretty_to_string;
