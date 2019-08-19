@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "My Project",
   "esy": {
     "build": "pesy",
@@ -13,8 +13,7 @@
         "@opam/dune",
         "unix",
         "pastel.lib",
-        "@opam/yojson",
-        "ppx_deriving_yojson.runtime"
+        "@opam/yojson"
       ]
     }
   },
@@ -67,9 +66,7 @@
     "@opam/merlin": "*"
   },
   "main": "index.js",
-  "bin": {
-    "re-create-app": "./_release/bin/ReCreateAppApp.exe"
-  },
+  "bin": "./_release/bin/ReCreateAppApp.exe",
   "repository": "git@github.com:Faliszek/re-create-app.git",
   "author": "Paweł Falisz <pawlic7@gmail.com>",
   "license": "MIT"
