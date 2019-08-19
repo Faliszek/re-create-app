@@ -164,12 +164,12 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
   //NOTE: i think i can resolve better this, but for now,
   //we need absolute path from our directory
   //localy i run it form
-  ///Users/pawelfalisz/Documents/Reason/create-reason-app/_esy/default/build/default/executable/CreateReasonAppApp.exe
-  //and we must change working directory to Users/pawelfalisz/Documents/Reason/create-reason-app/
+  ///Users/pawelfalisz/Documents/Reason/re-create-app/_esy/default/build/default/executable/ReCreateAppApp.exe
+  //and we must change working directory to Users/pawelfalisz/Documents/Reason/re-create-app/
   //I think this must be changed when i want to publish to npm, beacuse binary file
-  //is in /_release/bin/CreateReasonAppApp.exe, so when releasing, this variable strToCut
-  //should be " /_release/bin/CreateReasonAppApp.exe"
-  let strToCut = "/_esy/default/build/default/executable/CreateReasonAppApp.exe";
+  //is in /_release/bin/ReCreateAppApp.exe, so when releasing, this variable strToCut
+  //should be " /_release/bin/ReCreateAppApp.exe"
+  let strToCut = "/_esy/default/build/default/executable/ReCreateAppApp.exe";
   let lengthToCut = String.length(rootPath) - String.length(strToCut);
   let newPath = rootPath |> String.sub(_, 0, lengthToCut);
 
@@ -231,7 +231,12 @@ let run = () => {
   switch (Sys.argv, Sys.os_type) {
   | (args, "Unix") when args |> Array.length == 1 =>
     print_endline(
-      "You should provide name for your app, for example npx create-reason-app my-app",
+      Pastel.(
+        <Pastel>
+          "You should provide name for your app, for example as second argument: \n\n"
+          <Pastel bold=true> "npx re-create-app my-app" </Pastel>
+        </Pastel>
+      ),
     )
   | ([|path, name|], "Unix") =>
     startCreatingProject(~rootPath=path, ~appName=name)
@@ -241,4 +246,5 @@ let run = () => {
     print_endline("Sorry your OS is not supported :(")
   | _ => print_endline("something went preety wrong")
   };
+  print_endline("\n\nExiting.");
 };

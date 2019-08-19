@@ -1,2 +1,2 @@
 (lang dune 1.6)
- (name create-reason-app)
+ (name re-create-app)
