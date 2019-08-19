@@ -1,3 +1,5 @@
+### 🚧WIP: Work in progress! It is not usable yet
+
 ### What & Why
 
 This little tool helps you build web app with `Reason` and `React` with just one command.

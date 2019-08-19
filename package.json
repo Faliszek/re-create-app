@@ -9,6 +9,7 @@
         "ReCreateAppApp.exe"
       ],
       "includePackages": [
+        "root",
         "@opam/dune",
         "unix",
         "pastel.lib",
