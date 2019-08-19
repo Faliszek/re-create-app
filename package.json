@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "My Project",
   "esy": {
     "build": "pesy",
@@ -58,7 +58,6 @@
   "devDependencies": {
     "@opam/merlin": "*"
   },
-  "main": "index.js",
   "bin": {
     "re-create-app": "./_esy/default/build-release/default/executable/ReCreateAppApp.exe"
   },
