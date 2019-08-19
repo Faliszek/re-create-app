@@ -8,9 +8,12 @@
       "releasedBinaries": [
         "ReCreateAppApp.exe"
       ],
-      "deleteFromBinaryRelease": [
-        "ocaml-*",
-        "*jbuilder-*"
+      "includePackages": [
+        "root",
+        "@opam/dune",
+        "@opam/yojson",
+        "@opam/ppx_deriving_yojson",
+        "@reason-native/pastel"
       ]
     }
   },
