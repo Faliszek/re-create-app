@@ -11,13 +11,6 @@
     }
   },
   "buildDirs": {
-    "test": {
-      "require": [
-        "re-create-app.lib"
-      ],
-      "main": "TestReCreateApp",
-      "name": "TestReCreateApp.exe"
-    },
     "library": {
       "name": "re-create-app.lib",
       "namespace": "ReCreateApp",
