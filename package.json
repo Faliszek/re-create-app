@@ -1,19 +1,12 @@
 {
   "name": "re-create-app",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "My Project",
   "esy": {
     "build": "pesy",
     "release": {
       "releasedBinaries": [
         "ReCreateAppApp.exe"
-      ],
-      "includePackages": [
-        "root",
-        "@opam/dune",
-        "@opam/yojson",
-        "@opam/ppx_deriving_yojson",
-        "@reason-native/pastel"
       ]
     }
   },
