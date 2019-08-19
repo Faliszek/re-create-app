@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "My Project",
   "esy": {
     "build": "pesy",
@@ -67,6 +67,9 @@
     "@opam/merlin": "*"
   },
   "main": "index.js",
+  "bin": {
+    "re-create-app": "./_release/bin/ReCreateAppApp.exe"
+  },
   "repository": "git@github.com:Faliszek/re-create-app.git",
   "author": "Paweł Falisz <pawlic7@gmail.com>",
   "license": "MIT"
