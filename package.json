@@ -8,16 +8,8 @@
       "releasedBinaries": [
         "ReCreateAppApp.exe"
       ],
-      "deleteFromBinaryRelease": [
-        "@opam/ppx_deriving_yojson",
-        "*esy_ocaml__slash__esy_installer-*",
-        "*topkg-*",
-        "*esy_ocaml__slash__substs-*",
-        "*conf_which-*",
-        "*conf_m4-*",
-        "*cppo-*",
-        "*jbuilder-*",
-        "*dune-*"
+      "includeBinaries": [
+        "root"
       ]
     }
   },
