@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "My Project",
   "esy": {
     "build": "pesy",
@@ -9,7 +9,7 @@
         "ReCreateAppApp.exe"
       ],
       "deleteFromBinaryRelease": [
-        "*camlp4-*",
+        "@opam/ppx_deriving_yojson",
         "*esy_ocaml__slash__esy_installer-*",
         "*topkg-*",
         "*esy_ocaml__slash__substs-*",
@@ -18,9 +18,6 @@
         "*cppo-*",
         "*jbuilder-*",
         "*dune-*"
-      ],
-      "includePackages": [
-        "root"
       ]
     }
   },
@@ -74,7 +71,7 @@
   },
   "main": "index.js",
   "bin": {
-    "re-create-app": "./_release/bin/ReCreateAppApp.exe"
+    "re-create-app": "./_esy/default/build-release/default/executable/ReCreateAppApp.exe"
   },
   "repository": "git@github.com:Faliszek/re-create-app.git",
   "author": "Paweł Falisz <pawlic7@gmail.com>",
