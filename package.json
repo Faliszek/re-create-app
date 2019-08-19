@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "My Project",
   "esy": {
     "build": "pesy",
@@ -8,12 +8,19 @@
       "releasedBinaries": [
         "ReCreateAppApp.exe"
       ],
+      "deleteFromBinaryRelease": [
+        "*camlp4-*",
+        "*esy_ocaml__slash__esy_installer-*",
+        "*topkg-*",
+        "*esy_ocaml__slash__substs-*",
+        "*conf_which-*",
+        "*conf_m4-*",
+        "*cppo-*",
+        "*jbuilder-*",
+        "*dune-*"
+      ],
       "includePackages": [
-        "root",
-        "@opam/dune",
-        "unix",
-        "pastel.lib",
-        "@opam/yojson"
+        "root"
       ]
     }
   },
@@ -67,7 +74,7 @@
   },
   "main": "index.js",
   "bin": {
-    "re-create-app": "./_esy/default/build-release/default/executable/ReCreateAppApp.exe"
+    "re-create-app": "./_release/bin/ReCreateAppApp.exe"
   },
   "repository": "git@github.com:Faliszek/re-create-app.git",
   "author": "Paweł Falisz <pawlic7@gmail.com>",
