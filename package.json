@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "My Project",
   "esy": {
     "build": "pesy",
@@ -8,8 +8,9 @@
       "releasedBinaries": [
         "ReCreateAppApp.exe"
       ],
-      "includeBinaries": [
-        "root"
+      "deleteFromBinaryRelease": [
+        "ocaml-*",
+        "*jbuilder-*"
       ]
     }
   },
