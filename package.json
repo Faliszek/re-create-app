@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "My Project",
   "esy": {
     "build": "pesy",
