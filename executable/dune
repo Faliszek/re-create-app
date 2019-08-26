@@ -8,4 +8,5 @@
    ; The name of the executable (runnable via esy x ReCreateAppApp.exe) 
    (public_name ReCreateAppApp.exe)  ;  From package.json name field
    (libraries  re-create-app.lib ) ;  From package.json require field (array of strings)
+   (preprocess ( pps ppx_deriving_yojson ))  ; From package.json preprocess field
 )

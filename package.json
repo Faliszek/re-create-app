@@ -29,6 +29,10 @@
       "require": [
         "re-create-app.lib"
       ],
+      "preprocess": [
+        "pps",
+        "ppx_deriving_yojson"
+      ],
       "main": "ReCreateAppApp",
       "name": "ReCreateAppApp.exe"
     }
@@ -36,7 +40,8 @@
   "scripts": {
     "run": "esy x ReCreateAppApp.exe",
     "pesy": "bash -c 'env PESY_MODE=update pesy'",
-    "test": "esy x TestReCreateApp.exe"
+    "test": "esy x TestReCreateApp.exe",
+    "postinstall": "node ./esyInstallRelease.js"
   },
   "dependencies": {
     "@esy-ocaml/reason": "*",

@@ -174,6 +174,7 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
   let newPath = rootPath |> String.sub(_, 0, lengthToCut);
 
   Sys.chdir(newPath);
+
   try(
     Unix.system(
       ShellCommands.Unix.copyTemplate(~rootPath=newPath, ~projectPath),
