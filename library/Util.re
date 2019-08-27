@@ -20,6 +20,7 @@ let quitWithError = () => {
   );
   exit(0);
 };
+
 let createDirForProject = (~appName) => {
   let result = ref(Ok(""));
   let pathToBuild = Sys.getcwd();
@@ -161,23 +162,17 @@ let installingDependencies = (~packageManager) => {
 };
 
 let tryCopyTemplate = (~rootPath, ~projectPath) => {
-  //NOTE: i think i can resolve better this, but for now,
-  //we need absolute path from our directory
-  //localy i run it form
-  ///Users/pawelfalisz/Documents/Reason/re-create-app/_esy/default/build/default/executable/ReCreateAppApp.exe
-  //and we must change working directory to Users/pawelfalisz/Documents/Reason/re-create-app/
-  //I think this must be changed when i want to publish to npm, beacuse binary file
-  //is in /_release/bin/ReCreateAppApp.exe, so when releasing, this variable strToCut
-  //should be " /_release/bin/ReCreateAppApp.exe"
-  let strToCut = "/_esy/default/build/default/executable/ReCreateAppApp.exe";
-  let lengthToCut = String.length(rootPath) - String.length(strToCut);
-  let newPath = rootPath |> String.sub(_, 0, lengthToCut);
-
-  Sys.chdir(newPath);
+  let re = Str.regexp("/");
+  let folders = rootPath |> Str.split_delim(re) |> Array.of_list;
+  let templatePath =
+    folders
+    |> Array.sub(_, 0, Array.length(folders) - 5)
+    |> Array.fold_left((acc, folder) => acc ++ folder ++ "/", "");
+  // List.map(f => print_endline(f), foslders);
 
   try(
     Unix.system(
-      ShellCommands.Unix.copyTemplate(~rootPath=newPath, ~projectPath),
+      ShellCommands.Unix.copyTemplate(~rootPath=templatePath, ~projectPath),
     )
     |> ignore
   ) {
@@ -197,7 +192,6 @@ let startCreatingProject = (~rootPath, ~appName) => {
 
   | Ok(_) =>
     let pathToBuild = Sys.getcwd();
-    // print_endline(pathToBuild);
 
     let appPathName = pathToBuild ++ "/" ++ appName;
 

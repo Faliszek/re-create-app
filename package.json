@@ -1,7 +1,7 @@
 {
   "name": "re-create-app",
-  "version": "0.0.15",
-  "description": "My Project",
+  "version": "0.0.21",
+  "description": "Create react app with ReasonML, with one command!",
   "esy": {
     "build": "pesy",
     "release": {
@@ -61,5 +61,16 @@
   },
   "repository": "git@github.com:Faliszek/re-create-app.git",
   "author": "Paweł Falisz <pawlic7@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "reason",
+    "reasonml",
+    "react",
+    "react-app",
+    "create-react-app",
+    "bucklescript",
+    "bs-platform",
+    "parcel",
+    "parcel-bundler"
+  ]
 }
