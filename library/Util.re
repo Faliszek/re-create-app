@@ -206,7 +206,6 @@ let startCreatingProject = (~rootPath, ~appName) => {
       init(~path=appPathName);
       installingDependencies(~packageManager);
       instalingDevDependencies(~packageManager);
-
       tryCopyTemplate(~rootPath, ~projectPath=appPathName);
 
     | None =>
@@ -216,10 +215,7 @@ let startCreatingProject = (~rootPath, ~appName) => {
         ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
       )
     };
-    ();
   };
-  let _ = ();
-  ();
 };
 
 let run = () => {
