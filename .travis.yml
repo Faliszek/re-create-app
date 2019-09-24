@@ -1,40 +1,38 @@
 language: generic
 os:
-- linux
-- osx
+  - linux
+  - osx
 sudo: required
 services:
-- docker
+  - docker
 before_install:
-- if [ "$TRAVIS_OS_NAME" = "osx" ]; then export TARGET_NAME=darwin-x64; fi
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then export TARGET_NAME=linux-x64; fi
-- nvm install --lts
-- nvm use --lts
-- node -v
-- npm install -g esy@latest
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export TARGET_NAME=darwin-x64; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export TARGET_NAME=linux-x64; fi
+  - nvm install --lts
+  - nvm use --lts
+  - node -v
+  - npm install -g esy@latest
 before_script:
-- esy install
+  - esy install
 script:
-- esy
-- esy build
-- mv _esy/default/build/default/executable/ReCreateAppApp.exe re-create-app
-- esy npm-release
-- cd _release
-- echo "Releasing app $(node -v) ..."
+  - esy
+  - esy build
+  - mv _esy/default/build/default/executable/ReCreateAppApp.exe re-create-app
+  - esy npm-release
+  - cd _release
+  - echo "Releasing app $(node -v) ..."
 jobs:
   include:
-  - stage: npm release
-    node_js: '7'
-    script:
-    - echo "Publishing to npm ..."
-    - npm publish
-    deploy:
-      provider: npm
-      email: pawlic7@gmail.com
-      api_key: YOUR_AUTH_TOKEN
-      skip_cleanup: true
-      on:
-        tags: true
-deploy:
-  api_key:
-    secure: m6Ms/8nqWbxvrIlu4dF1Iajj1HuRk3D9s7AZzvZd3L0ZBc12VKIsOfOYbueqmoBm7oV/bE930S7vnJrslZcdyC3a7qepmzAjBIpvIkrd74SZzbq/jyXd2/dgL/Tlgay3xM+DrHmcatq79yaL0uqe/Z36YXoBemWguSO0j/RN8Pnw3+MmblxHH/uumFO1OWpHk4Kddpk2NZEhA3nS/3L+YCulUjhkNIItYSM8C2kYQYAY68zCRocJDykkRHV2+zjXjaLVyRaTahppkzQ2dv9GkdM9etaje1DFi1oaaEJRrVYfwyqTRD0P8kiBmqEmJyKu4NKMH2vNN7bdwcJpv8xI/UmBTGJaZtJNZpeeHAeIRRnz6es2TwGsjatJk5eT6hfSo5P1ilrEs1D+ltk8c34U/I5SU5koB+KQW/CciUphAYMF1sTVhHZ2P/Fthf7/BQhFkkc++P46FZlBUmMaWvmdMKMX6ELj/xS0/0Vmn5UjdCiIoWth5hkOvX8JqnpSQOb9O1gbECQKeKnmSoXQp2xLghb8iI1o7JoZ5ERBVKOM4ThcJrNuDSEzwmZWtK/BV/bOEXI4s5yXxEuHJtc1rISVzv+vBlhZtgvkh7TRkyjQ2G/F4BMK+j9LTMfBVOpe6pfxrZcy/Eid85zOJJNKdYA4jmyfkcn2e9LTFpvVcq9Wcy4=
+    - stage: npm release
+      node_js: "7"
+      script:
+        - echo "Publishing to npm ..."
+        - npm publish
+      deploy:
+        provider: npm
+        email: pawlic7@gmail.com
+        api_key:
+          secure: m6Ms/8nqWbxvrIlu4dF1Iajj1HuRk3D9s7AZzvZd3L0ZBc12VKIsOfOYbueqmoBm7oV/bE930S7vnJrslZcdyC3a7qepmzAjBIpvIkrd74SZzbq/jyXd2/dgL/Tlgay3xM+DrHmcatq79yaL0uqe/Z36YXoBemWguSO0j/RN8Pnw3+MmblxHH/uumFO1OWpHk4Kddpk2NZEhA3nS/3L+YCulUjhkNIItYSM8C2kYQYAY68zCRocJDykkRHV2+zjXjaLVyRaTahppkzQ2dv9GkdM9etaje1DFi1oaaEJRrVYfwyqTRD0P8kiBmqEmJyKu4NKMH2vNN7bdwcJpv8xI/UmBTGJaZtJNZpeeHAeIRRnz6es2TwGsjatJk5eT6hfSo5P1ilrEs1D+ltk8c34U/I5SU5koB+KQW/CciUphAYMF1sTVhHZ2P/Fthf7/BQhFkkc++P46FZlBUmMaWvmdMKMX6ELj/xS0/0Vmn5UjdCiIoWth5hkOvX8JqnpSQOb9O1gbECQKeKnmSoXQp2xLghb8iI1o7JoZ5ERBVKOM4ThcJrNuDSEzwmZWtK/BV/bOEXI4s5yXxEuHJtc1rISVzv+vBlhZtgvkh7TRkyjQ2G/F4BMK+j9LTMfBVOpe6pfxrZcy/Eid85zOJJNKdYA4jmyfkcn2e9LTFpvVcq9Wcy4=
+        skip_cleanup: true
+        on:
+          tags: true
