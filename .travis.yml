@@ -1,0 +1,24 @@
+language: generic
+
+os:
+  - linux
+  - osx
+sudo: required
+services:
+  - docker
+
+before_install:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export TARGET_NAME=darwin-x64; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export TARGET_NAME=linux-x64; fi
+  - nvm install --lts
+  - nvm use --lts
+  - node -v
+  - npm install -g esy@latest
+
+before_script:
+  - esy install
+
+script:
+  - esy
+  - esy build
+  - mv _esy/default/build/default/executable/ReCreateAppApp.exe re-create-app
