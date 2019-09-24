@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Create react app with ReasonML, with one command!",
   "esy": {
     "build": "pesy",
