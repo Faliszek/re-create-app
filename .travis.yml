@@ -22,3 +22,16 @@ script:
   - esy
   - esy build
   - mv _esy/default/build/default/executable/ReCreateAppApp.exe re-create-app
+  - esy npm-release
+  - cd _release
+  - echo "Releasing app $(node -v) ..."
+
+jobs:
+  include:
+    - stage: npm release
+      node_js: "7"
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        api_key: $NPM_API_KEY
+        on: deploy-npm-release
