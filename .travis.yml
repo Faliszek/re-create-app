@@ -32,7 +32,7 @@ jobs:
         provider: npm
         email: pawlic7@gmail.com
         api_key:
-          secure: m6Ms/8nqWbxvrIlu4dF1Iajj1HuRk3D9s7AZzvZd3L0ZBc12VKIsOfOYbueqmoBm7oV/bE930S7vnJrslZcdyC3a7qepmzAjBIpvIkrd74SZzbq/jyXd2/dgL/Tlgay3xM+DrHmcatq79yaL0uqe/Z36YXoBemWguSO0j/RN8Pnw3+MmblxHH/uumFO1OWpHk4Kddpk2NZEhA3nS/3L+YCulUjhkNIItYSM8C2kYQYAY68zCRocJDykkRHV2+zjXjaLVyRaTahppkzQ2dv9GkdM9etaje1DFi1oaaEJRrVYfwyqTRD0P8kiBmqEmJyKu4NKMH2vNN7bdwcJpv8xI/UmBTGJaZtJNZpeeHAeIRRnz6es2TwGsjatJk5eT6hfSo5P1ilrEs1D+ltk8c34U/I5SU5koB+KQW/CciUphAYMF1sTVhHZ2P/Fthf7/BQhFkkc++P46FZlBUmMaWvmdMKMX6ELj/xS0/0Vmn5UjdCiIoWth5hkOvX8JqnpSQOb9O1gbECQKeKnmSoXQp2xLghb8iI1o7JoZ5ERBVKOM4ThcJrNuDSEzwmZWtK/BV/bOEXI4s5yXxEuHJtc1rISVzv+vBlhZtgvkh7TRkyjQ2G/F4BMK+j9LTMfBVOpe6pfxrZcy/Eid85zOJJNKdYA4jmyfkcn2e9LTFpvVcq9Wcy4=
+          secure: djGgadoG8xZ7Lm5YWqq+R1yaiUDu2rJ32jvP5GvM3ucbU6Vsjkjrs/9jxx6jGyJpZevaztaVqOU8QwC/fHZ4xQJ41LfuV3CJfcMQeCJKfsU5T/ZrtN0pUhjoA5KJYqUyvUPmq/SehFhqkySIcn+wMOhKQSV+/6OUV9T5wCWn78/YAwHZ2+Y3xJbjKSOUR5oMAisdLScJGWPO8G6FCWOu8bocIsGJRavd5rL8BuKe2xgSaZUdIEC8LkS7bK2+7fssL6aLdECg7QSljjvpcNdVi7nSN09ScatIhcDDBNJwExaDRZEJCmINl0ZogrI04jaLinpe2YmdXuJg8VVj9xO1rMbLsyY1vGCuKCr5WOFxGherMFKSUzeiEBJpCWtcUwb3cbdMavITTgcpHU7yBQJGr+bGrYhgBYCTkPmt9FpbIibINx/PiyqN0d4LXy55IN+K8+5qmL607o4/TwRoDeaYDwvWTo4GEU59NNdbZf0HjyY1BBwtrw1vVg3sOinAjgt6kdVEfPwFF5oxJ0MjqeuyzJ82Kk17oRi6wFytM06UZV1IRfD89gQ6fhPIIwb1tuJKNKOTYuoftifnBuHF1VyEqtL9EPJESTOK+i8GOm0BwBcrvp7NHR/6Dfe0wmk5gH8s6n9pkOdl6rRP82xzIYvkr+IVifmFBjmKn8xt+aFm6QQ=
         skip_cleanup: true
         on:
           tags: true

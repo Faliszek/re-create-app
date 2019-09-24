@@ -72,5 +72,8 @@
     "bs-platform",
     "parcel",
     "parcel-bundler"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
