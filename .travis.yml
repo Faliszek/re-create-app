@@ -27,6 +27,8 @@ jobs:
       node_js: "7"
       script:
         - echo "Publishing to npm ..."
+        - pwd
+        - ls -lah
 
 deploy:
   provider: npm
@@ -34,4 +36,5 @@ deploy:
   api_key:
     secure: csW/Mu+NwJYTJmWTgKAB7L7TtnnNmQOZth5RdZpkGmISDpeC5bBTIrUrO916ET9ztrqoON5XsFpRz5sQWSz3M3j1AUcDUbNYdXqglzBVxzLQCw8/7c//o9+m6rebZ/55g/ReJM26MLPnNBsybj3u7iq4442K87UR+9c6+LvyZ9cH/GnooUC5Cr8DGIqgZa3Oaku0zD8EPTl+ayYBKB1MBjJNDg9Tg3OCv9kzbSI+f5//Xg+L96zzxJYEB80yZNHh3wMAwfOwH8kmohKepA5y7BvgXm0mvRzMGVvV6zBQLC2r7v9x9KuyAocjAC4Rvvxo2LYQDx6otHsYvOlNU0ZaRk11NxPMuZFg9ld+0PT4r4BlOu0gONSYxl+0g6qyXU+qaWAXfBmZGXsiTRDaXjdZ91W8n6Wa/yq1U+ife3UcBWNjPTyGYzyRRUhrMYtBNBNZTdWiah+ymc5J+D/P8ZCT4xSwzz8OH/+O0aOz07mKCQzgN4Vr+GVyuhIlHtqfJLNuroKA/BRyDS1gB90NbvA+ajYgZC2JqtWhiAgWcAl+Q2XKdOT+ZDi0S6GMnVShc+WeJ2UC7oMZwl3lJwXV5/Zeupy/qWUrSXKzv4iW0sfs7lkBmr+APeW6sz84iiNVUscHQvh0hIp5Oe6Hjr3qBCEiSDXMRQyHLuX+x9fDTluIgFo=
   on:
+    tags: true
     repo: Faliszek/re-create-app
