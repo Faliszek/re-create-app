@@ -3,7 +3,7 @@
 ### What & Why
 
 This little tool helps you build web app with `Reason` and `React` with just one command.
-I know that for some of you it might seems little overkill, beacuse you just install bs-platform, parcel, reason-react and you are go to go.
+I know that for some of you it might seems little overkill, beacuse you just install bs-platform, parcel, reason-react and you are ready.
 
 But when I was starting with react, create-react-app was very helpful so I made this tool to make starting with reason even simpler.
 
