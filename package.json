@@ -1,6 +1,6 @@
 {
   "name": "re-create-app",
-  "version": "0.0.23",
+  "version": "0.0.25",
   "description": "Create react app with ReasonML, with one command!",
   "esy": {
     "build": "pesy",
@@ -40,8 +40,7 @@
   "scripts": {
     "run": "esy x ReCreateAppApp.exe",
     "pesy": "bash -c 'env PESY_MODE=update pesy'",
-    "test": "esy x TestReCreateApp.exe",
-    "postinstall": "node ./pnp.js"
+    "test": "esy x TestReCreateApp.exe"
   },
   "dependencies": {
     "@esy-ocaml/reason": "*",
@@ -56,9 +55,7 @@
   "devDependencies": {
     "@opam/merlin": "*"
   },
-  "bin": {
-    "re-create-app": "./_esy/default/build-release/default/executable/ReCreateAppApp.exe"
-  },
+  "bin": "re-create-app",
   "repository": "git@github.com:Faliszek/re-create-app.git",
   "author": "Paweł Falisz <pawlic7@gmail.com>",
   "license": "MIT",
