@@ -5,7 +5,7 @@
   "esy": {
     "build": "pesy",
     "release": {
-      "releasedBinaries": [
+      "bin": [
         "ReCreateAppApp.exe"
       ]
     }
