@@ -3,7 +3,6 @@ const path = require("path");
 
 console.log("Creating package.json");
 const mainPackageJson = require("../package.json");
-console.log(mainPackageJson.esy.release.bin);
 const packageJson = JSON.stringify(
   {
     name: mainPackageJson.name,
@@ -15,7 +14,7 @@ const packageJson = JSON.stringify(
       postinstall: "node ./postinstall.js"
     },
     bin: mainPackageJson.esy.release.bin.reduce((acc, curr) => {
-      return Object.assign({ [curr]: "bin/" + curr }, acc);
+      return Object.assign({ "re-create-app": "bin/" + curr }, acc);
     }, {}),
     files: [
       "_export/",
