@@ -1,6 +1,6 @@
 module Unix = {
   let copyTemplate = (~rootPath, ~projectPath) => {
-    "pwd  && cp -R ./template/. " ++ projectPath ++ "/";
+    "cp -R " ++ rootPath ++ "/template/. " ++ projectPath ++ "/";
   };
   let checkYarn = "hash yarn";
   let checkNPM = "hash npm";
