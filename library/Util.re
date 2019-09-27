@@ -168,8 +168,8 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
     folders
     |> Array.sub(_, 0, Array.length(folders) - 5)
     |> Array.fold_left((acc, folder) => acc ++ folder ++ "/", "");
-  // List.map(f => print_endline(f), foslders);
 
+  print_endline("Template path is here " ++ templatePath);
   try(
     Unix.system(
       ShellCommands.Unix.copyTemplate(~rootPath=templatePath, ~projectPath),
@@ -230,7 +230,8 @@ let run = () => {
       ),
     )
   | ([|path, name|], "Unix") =>
-    startCreatingProject(~rootPath=path, ~appName=name)
+    print_endline("Runnig from " ++ path);
+    startCreatingProject(~rootPath=path, ~appName=name);
 
   | (_, "Windows") => print_endline("Sorry Windows is not supported yet :(")
   | ([|path, name|], _) =>
