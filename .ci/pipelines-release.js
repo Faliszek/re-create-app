@@ -3,6 +3,7 @@ const path = require("path");
 
 console.log("Creating package.json");
 const mainPackageJson = require("../package.json");
+console.log(mainPackageJson);
 const packageJson = JSON.stringify(
   {
     name: mainPackageJson.name,

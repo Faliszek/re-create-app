@@ -55,7 +55,9 @@
   "devDependencies": {
     "@opam/merlin": "*"
   },
-  "bin": "re-create-app",
+  "bin": {
+    "re-create-app": "./executable/ReCreateAppApp.re"
+  },
   "repository": "git@github.com:Faliszek/re-create-app.git",
   "author": "Paweł Falisz <pawlic7@gmail.com>",
   "license": "MIT",
