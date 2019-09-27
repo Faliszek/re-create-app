@@ -42,4 +42,5 @@ jobs:
       vmImage: macOS-10.13
       demands: node.js
     steps:
+      - script: "pwd && ls -lah"
       - template: .ci/cross-release.yml
