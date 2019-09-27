@@ -25,6 +25,7 @@ const packageJson = JSON.stringify(
       "platform-linux/",
       "platform-darwin/",
       "platform-windows-x64/"
+      "template/"
     ]
   },
   null,

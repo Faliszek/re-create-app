@@ -27,6 +27,9 @@ steps:
     displayName: "npm pack"
     workingDirectory: "_release"
 
+  - script: "mv template _release"
+    displayName: "Copying template for ReasonReact apps"
+
   - task: PublishBuildArtifacts@1
     displayName: "Publish Artifact: Release"
     inputs:
