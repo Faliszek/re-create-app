@@ -22,10 +22,11 @@ jobs:
       - template: utils/use-node.yml
       - template: utils/use-esy.yml
       - template: utils/restore-build-cache.yml
-      - script: "esy pesy"
-        displayName: "esy pesy"
+
       - script: "esy install"
         displayName: "esy install"
+      - script: "esy pesy"
+        displayName: "esy pesy"
       - script: "esy build"
         displayName: "esy build"
       # - template: utils/create-docs.yml
