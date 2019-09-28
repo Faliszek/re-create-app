@@ -2,7 +2,14 @@ module PackageJSON = {
   [@deriving yojson]
   type scripts = {
     start: string,
-    compile: string,
+    build: string,
+    clean: string,
+    [@key "buckle:restart"]
+    buckleRestart: string,
+    [@key "buckle:up"]
+    buckleUp: string,
+    [@key "buckle:clean"]
+    buckleClean: string,
   };
 
   [@deriving yojson]
@@ -25,7 +32,11 @@ module PackageJSON = {
         keywords: [|"reasonml", "bucklescript", "react"|],
         scripts: {
           start: "parcel  ./public/index.html --port 3000",
-          compile: "bsb -make-world -clean-world -w",
+          build: "parcel  build ./public/index.html",
+          clean: "rm -rf .cache",
+          buckleClean: "bsb -clean-world && rm -rf lib && rm -rf build",
+          buckleUp: "bsb -make-world -w",
+          buckleRestart: "bsb -clean-world && rm -rf lib && rm -rf build && bsb -make-world -w",
         },
       })
       |> Yojson.Safe.pretty_to_string;

@@ -18,7 +18,7 @@ let quitWithError = () => {
   print_endline(
     Pastel.(<Pastel bold=true color=Red> "\nExiting. " </Pastel>),
   );
-  exit(0);
+  exit(1);
 };
 
 let createDirForProject = (~appName) => {
@@ -120,14 +120,15 @@ let init = (~path) => {
   );
 };
 
-let instalingDevDependencies = (~packageManager) => {
+let installingDevDependencies = (~packageManager) => {
   print_endline(
     Pastel.(
       <Pastel>
         "\n⏳ Installing dev dependencies "
         <Pastel bold=true> "parcel" </Pastel>
         " and "
-        <Pastel bold=true> "bs-platform \n\n" </Pastel>
+        <Pastel bold=true> "bs-platform " </Pastel>
+        <Pastel> ", this may take a while \n\n" </Pastel>
       </Pastel>
     ),
   );
@@ -141,6 +142,7 @@ let instalingDevDependencies = (~packageManager) => {
   | exn => exn |> Printexc.to_string |> print_endline
   };
 };
+
 let installingDependencies = (~packageManager) => {
   print_endline(
     Pastel.(
@@ -182,11 +184,7 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
 };
 
 let startCreatingProject = (~rootPath, ~appName) => {
-  print_endline(
-    Pastel.(
-      <Pastel> "Starting create project, this may take a while \n" </Pastel>
-    ),
-  );
+  print_endline(Pastel.(<Pastel> "Start creating project\n" </Pastel>));
   switch (createDirForProject(~appName)) {
   | Error(_) => quitWithError()
 
@@ -205,7 +203,7 @@ let startCreatingProject = (~rootPath, ~appName) => {
 
       init(~path=appPathName);
       installingDependencies(~packageManager);
-      instalingDevDependencies(~packageManager);
+      installingDevDependencies(~packageManager);
       tryCopyTemplate(~rootPath, ~projectPath=appPathName);
 
     | None =>
@@ -230,13 +228,12 @@ let run = () => {
       ),
     )
   | ([|path, name|], "Unix") =>
-    print_endline("Runnig from " ++ path);
-    startCreatingProject(~rootPath=path, ~appName=name);
+    startCreatingProject(~rootPath=path, ~appName=name)
 
   | (_, "Windows") => print_endline("Sorry Windows is not supported yet :(")
   | ([|path, name|], _) =>
     print_endline("Sorry your OS is not supported :(")
-  | _ => print_endline("something went preety wrong")
+  | _ => print_endline("Something went preety wrong")
   };
   print_endline("\n\nExiting.");
 };
