@@ -1,0 +1,16 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [ "reasonml", "bucklescript", "react" ],
+  "scripts": {
+    "start": "parcel  ./public/index.html --port 3000",
+    "build": "parcel  build ./public/index.html",
+    "clean": "rm -rf .cache",
+    "buckle:restart":
+      "bsb -clean-world && rm -rf lib && rm -rf build && bsb -make-world -w",
+    "buckle:up": "bsb -make-world -w",
+    "buckle:clean": "bsb -clean-world && rm -rf lib && rm -rf build"
+  }
+}
