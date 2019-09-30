@@ -1,0 +1,1 @@
+let dir_is_empty = dir => Array.length(Sys.readdir(dir)) == 0;
