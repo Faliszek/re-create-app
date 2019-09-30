@@ -1,24 +1,10 @@
-type packageManager =
-  | NPM
-  | Yarn;
-
-let managerToString = m =>
-  switch (m) {
-  | NPM => "npm"
-  | Yarn => "yarn"
+module Err = {
+  let quit = () => {
+    print_endline(
+      Pastel.(<Pastel bold=true color=Red> "\nExiting. " </Pastel>),
+    );
+    exit(1);
   };
-
-let managerToCommand = m =>
-  switch (m) {
-  | NPM => "npm install"
-  | Yarn => "yarn add "
-  };
-
-let quitWithError = () => {
-  print_endline(
-    Pastel.(<Pastel bold=true color=Red> "\nExiting. " </Pastel>),
-  );
-  exit(1);
 };
 
 let createDirForProject = (~appName) => {
@@ -91,24 +77,6 @@ let createDirForProject = (~appName) => {
   result^;
 };
 
-let checkPackageManager = () => {
-  let noPackageManagerDetected =
-    Pastel.(<Pastel> "It looks like you don't have npm installed" </Pastel>);
-  let result = ref(None);
-  switch (Sys.command(ShellCommands.Unix.checkYarn)) {
-  | 0 => result := Some(Yarn)
-  | _ =>
-    switch (Sys.command(ShellCommands.Unix.checkNPM)) {
-    | 0 => result := Some(NPM)
-    | _ =>
-      print_endline(noPackageManagerDetected);
-      result := None;
-    }
-  };
-
-  result^;
-};
-
 let init = (~path) => {
   print_endline(
     Pastel.(
@@ -135,7 +103,8 @@ let installingDevDependencies = (~packageManager) => {
 
   try(
     Unix.system(
-      managerToCommand(packageManager) ++ " parcel-bundler bs-platform --dev",
+      PackageManager.toCommand(packageManager)
+      ++ " parcel-bundler bs-platform --dev",
     )
     |> ignore
   ) {
@@ -155,13 +124,18 @@ let installingDependencies = (~packageManager) => {
 
   try(
     Unix.system(
-      managerToCommand(packageManager) ++ "reason-react react react-dom",
+      PackageManager.toCommand(packageManager)
+      ++ "reason-react react react-dom",
     )
     |> ignore
   ) {
   | exn => exn |> Printexc.to_string |> print_endline
   };
 };
+
+//rootPath is a path from where program is stored,
+//and have /template inside
+//projectPath is place where user call our cli pacakge
 
 let tryCopyTemplate = (~rootPath, ~projectPath) => {
   let re = Str.regexp("/");
@@ -172,6 +146,7 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
     |> Array.fold_left((acc, folder) => acc ++ folder ++ "/", "");
 
   print_endline("Template path is here " ++ templatePath);
+
   try(
     Unix.system(
       ShellCommands.Unix.copyTemplate(~rootPath=templatePath, ~projectPath),
@@ -181,35 +156,32 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
   | exn => exn |> Printexc.to_string |> print_endline
   };
   Sys.chdir(projectPath);
+  ();
 };
 
 let startCreatingProject = (~rootPath, ~appName) => {
   print_endline(Pastel.(<Pastel> "Start creating project\n" </Pastel>));
-  switch (createDirForProject(~appName)) {
-  | Error(_) => quitWithError()
 
+  switch (createDirForProject(~appName)) {
+  | Error(_) => Err.quit()
   | Ok(_) =>
     let pathToBuild = Sys.getcwd();
-
     let appPathName = pathToBuild ++ "/" ++ appName;
-
-    switch (checkPackageManager()) {
+    tryCopyTemplate(~rootPath, ~projectPath=appPathName);
+    switch (PackageManager.check()) {
     | Some(packageManager) =>
-      FileConfig.PackageJSON.make(~appName, ~path=appPathName);
-
-      FileConfig.BSConfig.make(~appName, ~path=appPathName);
+      Config.PackageJSON.make(~appName, ~path=appPathName);
+      Config.BSConfig.make(~appName, ~path=appPathName);
       print_endline("\n✅ Created package.json succesfully!");
       Unix.chdir(appPathName) |> ignore;
-
       init(~path=appPathName);
       installingDependencies(~packageManager);
       installingDevDependencies(~packageManager);
       tryCopyTemplate(~rootPath, ~projectPath=appPathName);
-
     | None =>
       print_endline(
         "\n❌ It looks like you don't have installed "
-        ++ managerToString(NPM)
+        ++ PackageManager.toString(`NPM)
         ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
       )
     };
@@ -218,7 +190,7 @@ let startCreatingProject = (~rootPath, ~appName) => {
 
 let run = () => {
   switch (Sys.argv, Sys.os_type) {
-  | (args, "Unix") when args |> Array.length == 1 =>
+  | (args, _) when args |> Array.length == 1 =>
     print_endline(
       Pastel.(
         <Pastel>
@@ -227,13 +199,10 @@ let run = () => {
         </Pastel>
       ),
     )
-  | ([|path, name|], "Unix") =>
+  | ([|path, name|], _) =>
     startCreatingProject(~rootPath=path, ~appName=name)
 
   | (_, "Windows") => print_endline("Sorry Windows is not supported yet :(")
-  | ([|path, name|], _) =>
-    print_endline("Sorry your OS is not supported :(")
   | _ => print_endline("Something went preety wrong")
   };
-  print_endline("\n\nExiting.");
 };
