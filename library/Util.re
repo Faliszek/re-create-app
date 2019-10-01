@@ -159,6 +159,43 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
   ();
 };
 
+let createConfigFiles = (~appName, ~appPathName) => {
+  Config.PackageJSON.make(~appName, ~path=appPathName);
+  Config.BSConfig.make(~appName, ~path=appPathName);
+  print_endline(
+    Pastel.(
+      <Pastel>
+        "\n✅ Created "
+        <Pastel bold=true> "package.json" </Pastel>
+        "and"
+        <Pastel bold=true> "bsconfig.json" </Pastel>
+        "succesfully!"
+      </Pastel>
+    ),
+  );
+};
+
+let createProject = (~appPathName, ~rootPath, ~appName) => {
+  switch (PackageManager.check()) {
+  | Some(packageManager) =>
+    Unix.chdir(appPathName) |> ignore;
+    init(~path=appPathName);
+
+    createConfigFiles(~appName, ~appPathName);
+
+    installingDependencies(~packageManager);
+    installingDevDependencies(~packageManager);
+
+    tryCopyTemplate(~rootPath, ~projectPath=appPathName);
+  | None =>
+    print_endline(
+      "\n❌ It looks like you don't have installed "
+      ++ PackageManager.toString(`NPM)
+      ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
+    )
+  };
+};
+
 let startCreatingProject = (~rootPath, ~appName) => {
   print_endline(Pastel.(<Pastel> "Start creating project\n" </Pastel>));
 
@@ -168,23 +205,7 @@ let startCreatingProject = (~rootPath, ~appName) => {
     let pathToBuild = Sys.getcwd();
     let appPathName = pathToBuild ++ "/" ++ appName;
 
-    switch (PackageManager.check()) {
-    | Some(packageManager) =>
-      Config.PackageJSON.make(~appName, ~path=appPathName);
-      Config.BSConfig.make(~appName, ~path=appPathName);
-      print_endline("\n✅ Created package.json succesfully!");
-      Unix.chdir(appPathName) |> ignore;
-      init(~path=appPathName);
-      installingDependencies(~packageManager);
-      installingDevDependencies(~packageManager);
-      tryCopyTemplate(~rootPath, ~projectPath=appPathName);
-    | None =>
-      print_endline(
-        "\n❌ It looks like you don't have installed "
-        ++ PackageManager.toString(`NPM)
-        ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
-      )
-    };
+    createProject(~appPathName, ~rootPath, ~appName);
   };
 };
 
@@ -202,7 +223,6 @@ let run = () => {
   | ([|path, name|], _) =>
     startCreatingProject(~rootPath=path, ~appName=name)
 
-  | (_, "Windows") => print_endline("Sorry Windows is not supported yet :(")
   | _ => print_endline("Something went preety wrong")
   };
 };
