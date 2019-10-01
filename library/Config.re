@@ -41,7 +41,7 @@ module PackageJSON = {
       })
       |> Yojson.Safe.pretty_to_string;
 
-    let channel = open_out(path ++ "/package.json");
+    let channel = open_out(path ++ Filename.dir_sep ++ "package.json");
     output_string(channel, json);
     close_out(channel);
   };
@@ -108,7 +108,7 @@ module BSConfig = {
       })
       |> Yojson.Safe.pretty_to_string;
 
-    let channel = open_out(path ++ "/bsconfig.json");
+    let channel = open_out(path ++ Filename.dir_sep ++ "bsconfig.json");
     output_string(channel, json);
     close_out(channel);
   };

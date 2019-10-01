@@ -159,6 +159,46 @@ let tryCopyTemplate = (~rootPath, ~projectPath) => {
   ();
 };
 
+let createConfigFiles = (~appName, ~appPathName) => {
+  Config.PackageJSON.make(~appName, ~path=appPathName);
+  Config.BSConfig.make(~appName, ~path=appPathName);
+  print_endline(
+    Pastel.(
+      <Pastel>
+        "\n✅ Created "
+        <Pastel bold=true> "package.json" </Pastel>
+        "and"
+        <Pastel bold=true> "bsconfig.json" </Pastel>
+        "succesfully!"
+      </Pastel>
+    ),
+  );
+};
+
+let createProject = (~appPathName, ~rootPath, ~appName) => {
+  //For now i can't figure out good way to check on windows if yarn is installed,
+  //so i will go with npm
+
+  // switch (PackageManager.check()) {
+  // | Some(packageManager) =>
+  Unix.chdir(appPathName) |> ignore;
+  init(~path=appPathName);
+
+  createConfigFiles(~appName, ~appPathName);
+
+  installingDependencies(~packageManager=`NPM);
+  installingDevDependencies(~packageManager=`NPM);
+
+  tryCopyTemplate(~rootPath, ~projectPath=appPathName);
+  // | None =>
+  //   print_endline(
+  //     "\n❌ It looks like you don't have installed "
+  //     ++ PackageManager.toString(`NPM)
+  //     ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
+  //   )
+  // };
+};
+
 let startCreatingProject = (~rootPath, ~appName) => {
   print_endline(Pastel.(<Pastel> "Start creating project\n" </Pastel>));
 
@@ -167,24 +207,8 @@ let startCreatingProject = (~rootPath, ~appName) => {
   | Ok(_) =>
     let pathToBuild = Sys.getcwd();
     let appPathName = pathToBuild ++ "/" ++ appName;
-    tryCopyTemplate(~rootPath, ~projectPath=appPathName);
-    switch (PackageManager.check()) {
-    | Some(packageManager) =>
-      Config.PackageJSON.make(~appName, ~path=appPathName);
-      Config.BSConfig.make(~appName, ~path=appPathName);
-      print_endline("\n✅ Created package.json succesfully!");
-      Unix.chdir(appPathName) |> ignore;
-      init(~path=appPathName);
-      installingDependencies(~packageManager);
-      installingDevDependencies(~packageManager);
-      tryCopyTemplate(~rootPath, ~projectPath=appPathName);
-    | None =>
-      print_endline(
-        "\n❌ It looks like you don't have installed "
-        ++ PackageManager.toString(`NPM)
-        ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
-      )
-    };
+
+    createProject(~appPathName, ~rootPath, ~appName);
   };
 };
 
@@ -202,7 +226,6 @@ let run = () => {
   | ([|path, name|], _) =>
     startCreatingProject(~rootPath=path, ~appName=name)
 
-  | (_, "Windows") => print_endline("Sorry Windows is not supported yet :(")
   | _ => print_endline("Something went preety wrong")
   };
 };
