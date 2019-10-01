@@ -176,24 +176,27 @@ let createConfigFiles = (~appName, ~appPathName) => {
 };
 
 let createProject = (~appPathName, ~rootPath, ~appName) => {
-  switch (PackageManager.check()) {
-  | Some(packageManager) =>
-    Unix.chdir(appPathName) |> ignore;
-    init(~path=appPathName);
+  //For now i can't figure out good way to check on windows if yarn is installed,
+  //so i will go with npm
 
-    createConfigFiles(~appName, ~appPathName);
+  // switch (PackageManager.check()) {
+  // | Some(packageManager) =>
+  Unix.chdir(appPathName) |> ignore;
+  init(~path=appPathName);
 
-    installingDependencies(~packageManager);
-    installingDevDependencies(~packageManager);
+  createConfigFiles(~appName, ~appPathName);
 
-    tryCopyTemplate(~rootPath, ~projectPath=appPathName);
-  | None =>
-    print_endline(
-      "\n❌ It looks like you don't have installed "
-      ++ PackageManager.toString(`NPM)
-      ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
-    )
-  };
+  installingDependencies(~packageManager=`NPM);
+  installingDevDependencies(~packageManager=`NPM);
+
+  tryCopyTemplate(~rootPath, ~projectPath=appPathName);
+  // | None =>
+  //   print_endline(
+  //     "\n❌ It looks like you don't have installed "
+  //     ++ PackageManager.toString(`NPM)
+  //     ++ " on your system, you can install nodejs && npm here \n https://nodejs.org/en/download/package-manager/",
+  //   )
+  // };
 };
 
 let startCreatingProject = (~rootPath, ~appName) => {
