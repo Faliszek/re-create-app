@@ -13,6 +13,6 @@ module Unix = {
     print_endline(c);
     c;
   };
-  let checkYarn = "hash yarn";
-  let checkNPM = "hash npm";
+  let checkYarn = "yarn -v -q";
+  let checkNPM = "npm -v -q";
 };
