@@ -11,7 +11,7 @@ let createDirForProject = (~appName) => {
   let result = ref(Ok(""));
   let pathToBuild = Sys.getcwd();
 
-  let appPathName = pathToBuild ++ "/" ++ appName;
+  let appPathName = pathToBuild ++ Filename.dir_sep ++ appName;
 
   //Try create directory with current path and appName
 
@@ -138,12 +138,15 @@ let installingDependencies = (~packageManager) => {
 //projectPath is place where user call our cli pacakge
 
 let tryCopyTemplate = (~rootPath, ~projectPath) => {
-  let re = Str.regexp("/");
+  let re = Str.regexp(Filename.dir_sep);
   let folders = rootPath |> Str.split_delim(re) |> Array.of_list;
   let templatePath =
     folders
     |> Array.sub(_, 0, Array.length(folders) - 5)
-    |> Array.fold_left((acc, folder) => acc ++ folder ++ "/", "");
+    |> Array.fold_left(
+         (acc, folder) => acc ++ folder ++ Filename.dir_sep,
+         "",
+       );
 
   print_endline("Template path is here " ++ templatePath);
 
@@ -167,7 +170,7 @@ let createConfigFiles = (~appName, ~appPathName) => {
       <Pastel>
         "\n✅ Created "
         <Pastel bold=true> "package.json" </Pastel>
-        "and"
+        " and "
         <Pastel bold=true> "bsconfig.json" </Pastel>
         "succesfully!"
       </Pastel>
@@ -206,7 +209,7 @@ let startCreatingProject = (~rootPath, ~appName) => {
   | Error(_) => Err.quit()
   | Ok(_) =>
     let pathToBuild = Sys.getcwd();
-    let appPathName = pathToBuild ++ "/" ++ appName;
+    let appPathName = pathToBuild ++ Filename.dir_sep ++ appName;
 
     createProject(~appPathName, ~rootPath, ~appName);
   };

@@ -8,7 +8,7 @@ let toString = m =>
 
 let toCommand = m =>
   switch (m) {
-  | `NPM => "npm install"
+  | `NPM => "npm install "
   | `Yarn => "yarn add "
   };
 
