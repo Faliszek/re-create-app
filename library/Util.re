@@ -167,7 +167,7 @@ let startCreatingProject = (~rootPath, ~appName) => {
   | Ok(_) =>
     let pathToBuild = Sys.getcwd();
     let appPathName = pathToBuild ++ "/" ++ appName;
-    tryCopyTemplate(~rootPath, ~projectPath=appPathName);
+
     switch (PackageManager.check()) {
     | Some(packageManager) =>
       Config.PackageJSON.make(~appName, ~path=appPathName);
